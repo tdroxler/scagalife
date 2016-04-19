@@ -13,7 +13,7 @@ object GameOfLife{
   def loop(world:World, gridX:Int, gridY:Int, sleepTime: Int):Unit ={
     show(world, gridX, gridY)
     Thread.sleep(sleepTime)
-    loop(world.step, gridX, gridY, sleepTime)
+    loop(World.step(world), gridX, gridY, sleepTime)
   }
 
   //TODO Do it with a nice scalajs app

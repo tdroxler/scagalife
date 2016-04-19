@@ -1,13 +1,15 @@
 package scagalife
 
-case class World(cells: List[Cell]) {
-  def step : World = {
-    cells.foldLeft((List():List[Cell], Map():Map[Cell, Int])){(acc, cell) =>
+case class World(cells: List[Cell])
+
+object World {
+  def step(world: World) : World = {
+    world.cells.foldLeft((List():List[Cell], Map():Map[Cell, Int])){(acc, cell) =>
       acc match { case (livingCells, foetusCells) =>
         val (countNeighbors, innerFetusCells) = cell.neighbors.foldLeft(0, foetusCells){
           (innerAcc, neighbor) => {
             innerAcc match {case (count, ifc) =>
-              if(cells.contains(neighbor)){
+              if(world.cells.contains(neighbor)){
                 (count + 1, ifc)
               }else{
                 (count, ifc.get(neighbor).map{
