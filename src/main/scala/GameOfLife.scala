@@ -7,8 +7,10 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl._
 
-object GameOfLife{
-  def main(args:Array[String]):Unit ={
+object GameOfLife {
+
+  def main(args: Array[String]): Unit = {
+
     implicit val system = ActorSystem("Scagalife")
     implicit val materializer = ActorMaterializer()
 
@@ -24,15 +26,15 @@ object GameOfLife{
   }
 
   //TODO Do it with a nice scalajs app
-  def show(w:World, gridX:Int, gridY:Int):Unit = {
+  def show(w: World, gridX: Int, gridY: Int): Unit = {
     val gx = gridX/2
     val gy = gridY/2
-    (-gy to gy).reverseMap{ y =>
+    (-gy to gy).reverseMap { y =>
       println()
-      (-gx to gx).map{ x =>
-        if(w.cells.contains(Cell(x,y))){
+      (-gx to gx).map { x =>
+        if(w.cells.contains(Cell(x, y))) {
           print("*")
-        }else{
+        } else {
           print("-")
         }
       }
