@@ -1,19 +1,26 @@
 package scagalife
 
-import scala.annotation.tailrec
 import Patterns._
+
+import akka.NotUsed
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl._
 
 object GameOfLife{
   def main(args:Array[String]):Unit ={
-    loop(World(diehard), 100, 40, 500)
+    implicit val system = ActorSystem("Scagalife")
+    implicit val materializer = ActorMaterializer()
+
+    scan(World(diehard))(World.step).runForeach { world =>
+      show(world, 100, 40)
+      Thread.sleep(500)
+    }
   }
 
-  //TODO make it stop :-)
-  @tailrec
-  def loop(world:World, gridX:Int, gridY:Int, sleepTime: Int):Unit ={
-    show(world, gridX, gridY)
-    Thread.sleep(sleepTime)
-    loop(World.step(world), gridX, gridY, sleepTime)
+  //TODO make it stoppable :-)
+  def scan[A](a: A)(f: A => A) : Source[A, NotUsed] = {
+    Source.repeat(()).scan(a)((b: A, u: Unit) => f(b))
   }
 
   //TODO Do it with a nice scalajs app
